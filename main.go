@@ -6,10 +6,13 @@ import (
 )
 
 func main() {
-	setupeAPI()
+	setupAPI()
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func setupeAPI() {
+func setupAPI() {
+	manager := NewManager()
 	http.Handle("/", http.FileServer(http.Dir("./frontend")))
+	http.HandleFunc("/ws", manager.serveWS)
+
 }
