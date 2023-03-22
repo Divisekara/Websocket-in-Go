@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
+	"sync"
 )
 
 var (
@@ -14,11 +15,13 @@ var (
 )
 
 type Manager struct {
+	client ClientList
+	sync.RWMutex
 }
 
 // NewManager factory method for Manger struct
-func NewManager() *Manager {
-	return &Manager{}
+func NewManager(client ClientList) *Manager {
+	return &Manager{client: make(ClientList)}
 }
 
 func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
@@ -31,6 +34,24 @@ func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	conn.Close()
+	client := NewClient(conn, m)
+	m.addClient(client)
 
+}
+
+func (m *Manager) addClient(client *Client) {
+	m.Lock()
+	defer m.Unlock()
+
+	m.client[client] = true
+}
+
+func (m *Manager) removeClient(client *Client) {
+	m.Lock()
+	defer m.Unlock()
+
+	if _, ok := m.client[client]; ok {
+		client.connection.Close()
+		delete(m.client, client)
+	}
 }
