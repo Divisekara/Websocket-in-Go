@@ -42,7 +42,7 @@
         function sendMessage(){
             var newmessage = document.getElementById("chatroom");
             if(newmessage != null){
-                console.log(newmessage);
+                conn.send(newmessage.value);
             }
             return false;
         }
