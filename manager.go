@@ -15,13 +15,13 @@ var (
 )
 
 type Manager struct {
-	client ClientList
+	clients ClientList
 	sync.RWMutex
 }
 
 // NewManager factory method for Manger struct
 func NewManager(client ClientList) *Manager {
-	return &Manager{client: make(ClientList)}
+	return &Manager{clients: make(ClientList)}
 }
 
 func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
@@ -37,21 +37,24 @@ func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
 	client := NewClient(conn, m)
 	m.addClient(client)
 
+	// start client processes
+	go client.readMessages()
+
 }
 
 func (m *Manager) addClient(client *Client) {
 	m.Lock()
 	defer m.Unlock()
 
-	m.client[client] = true
+	m.clients[client] = true
 }
 
 func (m *Manager) removeClient(client *Client) {
 	m.Lock()
 	defer m.Unlock()
 
-	if _, ok := m.client[client]; ok {
+	if _, ok := m.clients[client]; ok {
 		client.connection.Close()
-		delete(m.client, client)
+		delete(m.clients, client)
 	}
 }

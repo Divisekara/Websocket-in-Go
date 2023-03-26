@@ -15,3 +15,11 @@ func NewClient(connection *websocket.Conn, manager *Manager) *Client {
 		manager:    manager,
 	}
 }
+
+func (c *Client) readMessages() (int, []byte) {
+	messageType, message, err := c.connection.ReadMessage()
+	if err != nil {
+		panic(err)
+	}
+	return messageType, message
+}
