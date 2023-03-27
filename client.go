@@ -38,5 +38,6 @@ func (c *Client) readMessages() {
 		}
 		log.Println(messageType)
 		log.Println(string(payload))
+		_ = c.connection.WriteMessage(1, []byte("asitha"))
 	}
 }
