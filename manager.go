@@ -20,7 +20,7 @@ type Manager struct {
 }
 
 // NewManager factory method for Manger struct
-func NewManager(client ClientList) *Manager {
+func NewManager() *Manager {
 	return &Manager{clients: make(ClientList)}
 }
 

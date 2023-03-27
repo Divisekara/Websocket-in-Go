@@ -12,9 +12,9 @@ type Client struct {
 	manager    *Manager
 }
 
-func NewClient(connection *websocket.Conn, manager *Manager) *Client {
+func NewClient(conn *websocket.Conn, manager *Manager) *Client {
 	return &Client{
-		connection: connection,
+		connection: conn,
 		manager:    manager,
 	}
 }

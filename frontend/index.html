@@ -33,14 +33,14 @@
 
         function changeChatRoom(){
             var newchat = document.getElementById("chatroom");
-            if(newchat != null && newchat.value !== selectedChat){
+            if(newchat != null && newchat.value != selectedChat){
                 console.log(newchat);
             }
             return false;
         }
 
         function sendMessage(){
-            var newmessage = document.getElementById("chatroom");
+            var newmessage = document.getElementById("message");
             if(newmessage != null){
                 conn.send(newmessage.value);
             }
@@ -55,7 +55,7 @@
             if(window["WebSocket"]) {
                 console.log("supports websockets")
                 // connect to the websocket
-                new WebSocket("ws://"+document.location.host + "/ws");
+                conn = new WebSocket("ws://"+document.location.host + "/ws");
             } else {
                 alert('browser does not support websocket');
             }
