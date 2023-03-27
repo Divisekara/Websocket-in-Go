@@ -16,3 +16,11 @@ func setupAPI() {
 	http.HandleFunc("/ws", manager.serveWS)
 
 }
+
+/*
+websockets have few events -
+1. closed
+2. Error
+3. Message
+4. Open
+*/

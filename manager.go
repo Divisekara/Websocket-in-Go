@@ -39,6 +39,7 @@ func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
 
 	// start client processes
 	go client.readMessages()
+	go client.writeMessages()
 
 }
 
